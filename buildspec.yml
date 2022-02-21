@@ -1,0 +1,33 @@
+version: 0.2
+
+env:
+   parameter-store:
+           DB_Name: "/harleen/db_name"
+           DB_User: "/harleen/db_user"
+           DB_Password: "/harleen/db_pass"
+           DB_Host: "/harleen/db_host"
+               
+phases:
+         
+  pre_build:
+    commands:
+      - apt update -y
+      - echo Installing source wordpress dependencies.
+      - apt install nginx -y
+      - apt install php php-fpm php-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip -y
+      
+  build:
+    commands:
+      - sed -i 's/database_name_here/'$DB_Name'/' wp-config.php
+      - sed -i 's/username_here/'$DB_User'/' wp-config.php
+      - sed -i 's/password_here/'$DB_Password'/' wp-config.php
+      - sed -i 's/localhost/'$DB_Host'/' wp-config.php
+      - echo Build started on `date`
+      - echo Compiling the wordpress code
+  post_build:
+    commands:
+      - echo Build completed on `date`
+            
+artifacts:
+        files:
+            - '**/*'

@@ -7,7 +7,7 @@ files:
 
 hooks:
    Afterinstall:
-         - location: /script/Install.sh
+         - location: /script/install.sh
            timeout: 500
            runas: root
 
